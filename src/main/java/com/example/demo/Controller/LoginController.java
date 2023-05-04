@@ -28,19 +28,22 @@ public class LoginController {
 
     @GetMapping("/login")
     public String showLoginPage() {
-        return "dashboard";
+        return "login";
     }
 
     @PostMapping("/login")
     public String processLogin(@RequestParam String username, @RequestParam String password, Model model) {
         accounts user = userService.login(username, password);
         if (user != null) {
-
+            //đăng nhập thành công
             if(user.get_matk().contains("msv")){
+                model.addAttribute("matk",user.get_matk());
                 return "pageSV";
             } else if (user.get_matk().contains("mgv")) {
+                model.addAttribute("matk",user.get_matk());
                 return "pageGV";
             } else if(user.get_matk().contains("mpdt")){
+                model.addAttribute("matk",user.get_matk());
                 return "pageADMIN";
             } else{return null;}
 

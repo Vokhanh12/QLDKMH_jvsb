@@ -15,13 +15,12 @@
             display: block;
               margin: auto;
               width: 50%;
-            background-color: red;
+              heigth: 100%;
         }
 
         .content-top {
             width: 100%;
             height: 50%;
-            background-color: blue;
         }
 
         .content-bottom {
@@ -29,19 +28,104 @@
             height: 50%;
             background-color: darkgray;
         }
+
+        .content-top button{
+              width: 100px;
+              height: 50px;
+        }
     </style>
+
+   <script>
+       function loadListViewSV(){
+           var listViewDiv = document.getElementById("ListViewDiv"); // thêm dòng này
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          listViewDiv.innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("POST", "/listsv", true);
+      xhttp.send();
+        }
+
+      function loadListViewGV(){
+            var listViewDiv = document.getElementById("ListViewDiv"); // thêm dòng này
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          listViewDiv.innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("POST", "/listgv", true);
+      xhttp.send();
+      }
+
+
+
+   </script>
+
 </head>
 <body>
 <div class="container">
     <div class="content-top">
-        <h1>Hello world</h1>
-        <p th:text="${matk}"></p>
-        <button type="button"></button>
+        <a href="#" style="float:right;">Xin chào:<p style="display:inline;" th:text="${matk}"></p></a> <br>
+
+        <button type="button" onclick="loadListViewSV()">Danh sách sinh viên</button>
+        <button type="button" onclick="loadListViewGV()">Danh sách giáo viên</button>
     </div>
 
-    <div class="content-bottom">
+    <div class="content-bottom" id="ListViewDiv">
 
     </div>
 </div>
+<script>
+         function addNewRow() {
+          // Lấy bảng bằng ID
+          var table = document.getElementById("listviewSV");
+
+          // Lấy dòng trống để thêm vào
+          var emptyRow = document.getElementById("emptyRow");
+
+
+          // Lấy giá trị bằng các ô input
+          var idValue = document.getElementById("inputID").value;
+          var magvValue= document.getElementById("inputMaGV").value;
+          var tengvValue = document.getElementById("inputTenGV").value
+
+            // Kiểm tra nếu các ô input đều có giá trị
+            if (idValue && magvValue && tengvValue) {
+
+            //Tạo dòng mới
+            var newRow = table.insertRow(emptyRow.rowIndex);
+
+            // Thêm các ô td vào dòng mới
+            var idCell = newRow.insertCell(0);
+            var magvCell = newRow.insertCell(1);
+            var tengvCell = newRow.insertCell(2);
+            var editCell = newRow.insertCell(3);
+            var deleteCell = newRow.insertCell(4);
+
+              // Gán giá trị vào các ô td
+            idCell.innerHTML = idValue;
+            magvCell.innerHTML = magvValue;
+            tengvCell.innerHTML = tengvValue;
+            editCell.innerHTML = "<button>Sửa</button>";
+            deleteCell.innerHTML = "<button>Xóa</button>";
+
+              // Reset giá trị các ô input
+            document.getElementById("inputID").value = "";
+            document.getElementById("inputMaGV").value = "";
+            document.getElementById("inputTenGV").value = "";
+
+             // Di chuyển dòng trống xuống dưới
+            table.moveRow(emptyRow.rowIndex, emptyRow.rowIndex + 1);
+            } else {
+                // Nếu có ô input nào không có giá trị, hiển thị thông báo lỗi
+                alert("Vui lòng nhập đầy đủ thông tin!");
+            }
+        }
+    </script>
+
+
 </body>
 </html>
