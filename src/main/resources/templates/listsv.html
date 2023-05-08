@@ -30,9 +30,9 @@
         </thead>
         <tbody>
         <tr th:each="student : ${students}">
-            <td th:text="${student.getId()}"></td>
-            <td th:text="${student.getMasv}"></td>
-            <td th:text="${student.getTensv}"></td>
+            <td th:text="${student.getInputID}"></td>
+            <td th:text="${student.getInputMaGV}"></td>
+            <td th:text="${student.getInputTenGV}"></td>
             <td><button>Sửa</button></td>
             <td><button>Xóa</button></td>
         </tr>
@@ -40,9 +40,9 @@
         <!-- Dòng thêm mới -->
         <tfoot>
         <tr id="emptyRow">
-            <td><input type="text" id="inputID"></td>
-            <td><input type="text" id="inputMaGV"></td>
-            <td><input type="text" id="inputTenGV"></td>
+            <td><input type="text" id="inputID" name="inputID"></td>
+            <td><input type="text" id="inputMaGV" name="inputMaGV"></td>
+            <td><input type="text" id="inputTenGV" name="inputTenGV"></td>
             <td><button onclick="addNewRow()" type="submit">Thêm</button></td>
             <p th:if="${error}" th:text="${error}" style="color: red"></p>
             <td></td>

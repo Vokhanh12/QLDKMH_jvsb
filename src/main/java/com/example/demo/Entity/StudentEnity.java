@@ -8,35 +8,37 @@ public class StudentEnity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id; // add this line
+    private Long inputID; // add this line
 
     @Column(name = "masv")
-    private String masv;
+    private String inputMaGV;
 
     @Column(name = "tensv")
-    private String tensv;
+    private String inputTenGV;
 
     // getters and setters
-    public String getTensv(){
-        return  tensv;
+
+    public Long getInputID() {
+        return inputID;
     }
 
-    public void setTensv(String tensv) {
-        this.tensv = tensv;
+    public String getInputMaGV() {
+        return inputMaGV;
     }
 
-    public String getMasv() {
-        return masv;
+    public String getInputTenGV() {
+        return inputTenGV;
     }
 
-    public void setMasv(String masv) {
-        this.masv = masv;
+    public void setInputID(Long inputID) {
+        this.inputID = inputID;
     }
 
-    public Long getId() {
-        return id;
+    public void setInputMaGV(String inputMaGV) {
+        this.inputMaGV = inputMaGV;
     }
-    public void setId(Long id) {
-        this.id = id;
+
+    public void setInputTenGV(String inputTenGV) {
+        this.inputTenGV = inputTenGV;
     }
 }

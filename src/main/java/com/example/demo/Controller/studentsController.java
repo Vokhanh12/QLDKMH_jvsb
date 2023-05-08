@@ -5,26 +5,25 @@ import com.example.demo.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/submit-form")
 public class studentsController {
 
     @Autowired
     private StudentRepository studentRepository;
 
-    @PostMapping("")
-    public void handleSubmitForm(@RequestBody StudentEnity studentEntity, Model model) {
-        // code to save student to database
-
-        // lưu studentEntity vào cơ sở dữ liệu
-        studentRepository.save(studentEntity);
-
-
+    @GetMapping("/submit-form")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("student", new StudentEnity());
+        return "login";
     }
+
+    @PostMapping("/submit-form")
+    public String registerUser(@ModelAttribute("student") StudentEnity studentEnity) {
+        studentRepository.save(studentEnity);
+        return "redirect:/login";
+    }
+
 }
 

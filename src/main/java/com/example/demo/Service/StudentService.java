@@ -10,11 +10,4 @@ public class StudentService {
     private StudentRepository studentRepository;
 
 
-
-    public void addTeacher(String maSV, String tenSV) {
-        StudentEnity studentEnity= new StudentEnity();
-        studentEnity.setMasv(maSV);
-        studentEnity.setTensv(maSV);
-        studentRepository.save(studentEnity);
-    }
 }
