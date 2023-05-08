@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "account")
-public class accounts {
+public class AccountsEntity {
 
     @Id
     private Long id;

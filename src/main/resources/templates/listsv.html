@@ -1,90 +1,55 @@
+<!-- HTML template using Thymeleaf syntax -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Student List</title>
     <style>
-         table {
-          border-collapse: collapse;
-          width: 100%;
-        }
-
-        th, td {
-          text-align: left;
-          padding: 8px;
-        }
-
-        th {
-          background-color: #4CAF50;
-          color: white;
-        }
-
-        tr:nth-child(even) {
-          background-color: #f2f2f2;
-        }
-
-        tr:hover {
-          background-color: #ddd;
-        }
-
-        td:first-child {
-          width: 10%;
-        }
-
-        td:nth-child(2) {
-          width: 20%;
-        }
-
-        td:last-child {
-          width: 70%;
-        }
+        /* CSS styling for table */
     </style>
 
+    <script>
+
+
+    </script>
 
 </head>
 <body>
+<h1>Student List</h1>
+<div id="messageDiv"></div>
+<form id="myForm" action="/submit-form" method="post">
 
-<h1>danh sach sinh vien</h1>
-<table  id="listviewSV">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Mã GV</th>
-        <th>Tên SV</th>
-        <th colspan="2">Hành động</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>1</td>
-        <td>GV001</td>
-        <td>Nguyễn Văn A</td>
-        <td><button>Sửa</button></td>
-        <td><button>Xóa</button></td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>GV002</td>
-        <td>Trần Thị B</td>
-        <td><button>Sửa</button></td>
-        <td><button>Xóa</button></td>
-    </tr>
-    <!-- Dòng trống để thêm -->
-    <tr id="emptyRow">
-        <td colspan="5"></td>
-    </tr>
-    </tbody>
-    <!-- Dòng thêm mới -->
-    <tfoot>
-    <tr id="addRow">
-        <td><input type="text" id="inputID"></td>
-        <td><input type="text" id="inputMaGV"></td>
-        <td><input type="text" id="inputTenGV"></td>
-        <td><button onclick="addNewRow()">Thêm</button></td>
-        <td></td>
-    </tr>
-    </tfoot>
-</table>
+    <table  id="listviewSV" border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Mã sinh viên</th>
+            <th>Tên sinh viên</th>
+            <th colspan="2">Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student : ${students}">
+            <td th:text="${student.getId()}"></td>
+            <td th:text="${student.getMasv}"></td>
+            <td th:text="${student.getTensv}"></td>
+            <td><button>Sửa</button></td>
+            <td><button>Xóa</button></td>
+        </tr>
+        </tbody>
+        <!-- Dòng thêm mới -->
+        <tfoot>
+        <tr id="emptyRow">
+            <td><input type="text" id="inputID"></td>
+            <td><input type="text" id="inputMaGV"></td>
+            <td><input type="text" id="inputTenGV"></td>
+            <td><button onclick="addNewRow()" type="submit">Thêm</button></td>
+            <p th:if="${error}" th:text="${error}" style="color: red"></p>
+            <td></td>
+        </tr>
+        </tfoot>
+    </table>
+</form>
 
 </body>
 </html>

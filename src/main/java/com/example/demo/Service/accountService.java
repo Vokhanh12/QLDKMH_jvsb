@@ -1,20 +1,20 @@
 package com.example.demo.Service;
 
 
-import com.example.demo.Entity.accounts;
-import com.example.demo.Repository.accountRepository;
+import com.example.demo.Entity.AccountsEntity;
+import com.example.demo.Repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class accountService {
 
-    private accountRepository userRepository;
+    private AccountRepository userRepository;
 
-    public accountService(accountRepository userRepository) {
+    public accountService(AccountRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public accounts login(String username, String password){
+    public AccountsEntity login(String username, String password){
         return userRepository.findByUsernameAndPassword(username,password);
     }
 

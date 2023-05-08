@@ -1,6 +1,6 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Entity.accounts;
+import com.example.demo.Entity.AccountsEntity;
 import com.example.demo.Service.accountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String processLogin(@RequestParam String username, @RequestParam String password, Model model) {
-        accounts user = userService.login(username, password);
+        AccountsEntity user = userService.login(username, password);
         if (user != null) {
             //đăng nhập thành công
             if(user.get_matk().contains("msv")){

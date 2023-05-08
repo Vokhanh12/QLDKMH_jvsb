@@ -61,25 +61,7 @@
       }
 
 
-
-   </script>
-
-</head>
-<body>
-<div class="container">
-    <div class="content-top">
-        <a href="#" style="float:right;">Xin chào:<p style="display:inline;" th:text="${matk}"></p></a> <br>
-
-        <button type="button" onclick="loadListViewSV()">Danh sách sinh viên</button>
-        <button type="button" onclick="loadListViewGV()">Danh sách giáo viên</button>
-    </div>
-
-    <div class="content-bottom" id="ListViewDiv">
-
-    </div>
-</div>
-<script>
-         function addNewRow() {
+          function addNewRow() {
           // Lấy bảng bằng ID
           var table = document.getElementById("listviewSV");
 
@@ -94,6 +76,31 @@
 
             // Kiểm tra nếu các ô input đều có giá trị
             if (idValue && magvValue && tengvValue) {
+
+
+                  // Display success message
+            var messageDiv = document.getElementById("messageDiv");
+            messageDiv.innerHTML = "Thêm thành công!";
+
+            //Xử lý thêm vào mySQL
+           // Tạo đối tượng XMLHttpRequest để gửi request lên server
+          var xhttp = new XMLHttpRequest();
+
+          // Định nghĩa hàm xử lý khi nhận được response từ server
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              // Xử lý response từ server tại đây
+              // Ví dụ: hiển thị thông báo thành công
+              document.getElementById("messageDiv").innerHTML = "Thêm sinh viên thành công!";
+              // Refresh lại trang sau khi thêm thành công
+              window.location.href = "/student-list";
+            }
+          };
+
+          // Gửi request lên server
+          xhttp.open("POST", "/submit-form", true);
+          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhttp.send("id=" + id + "&masv=" + masv + "&tensv=" + tensv);
 
             //Tạo dòng mới
             var newRow = table.insertRow(emptyRow.rowIndex);
@@ -117,14 +124,39 @@
             document.getElementById("inputMaGV").value = "";
             document.getElementById("inputTenGV").value = "";
 
+
              // Di chuyển dòng trống xuống dưới
             table.moveRow(emptyRow.rowIndex, emptyRow.rowIndex + 1);
+
+
+
+
             } else {
                 // Nếu có ô input nào không có giá trị, hiển thị thông báo lỗi
                 alert("Vui lòng nhập đầy đủ thông tin!");
             }
+
+
         }
-    </script>
+
+
+   </script>
+
+</head>
+<body>
+<div class="container">
+    <div class="content-top">
+        <a href="#" style="float:right;">Xin chào:<p style="display:inline;" th:text="${matk}"></p></a> <br>
+
+        <button type="button" onclick="loadListViewSV()">Danh sách sinh viên</button>
+        <button type="button" onclick="loadListViewGV()">Danh sách giáo viên</button>
+    </div>
+
+    <div class="content-bottom" id="ListViewDiv">
+
+    </div>
+</div>
+
 
 
 </body>
