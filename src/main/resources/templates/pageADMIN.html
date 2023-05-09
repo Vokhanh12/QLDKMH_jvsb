@@ -33,9 +33,10 @@
               width: 100px;
               height: 50px;
         }
+
     </style>
 
-   <script>
+    <script>
        function loadListViewSV(){
            var listViewDiv = document.getElementById("ListViewDiv"); // thêm dòng này
       var xhttp = new XMLHttpRequest();
@@ -59,6 +60,29 @@
       xhttp.open("POST", "/listgv", true);
       xhttp.send();
       }
+
+          // Hàm xóa dòng
+            function deleteRow(row) {
+              var i = row.parentNode.parentNode.rowIndex;
+               var name = document.getElementById("listviewSV").rows[i].cells[0].innerHTML;
+              document.getElementById("listviewSV").deleteRow(i);
+               console.log(name);
+               deleteRecord(name);
+            }
+                 //dùng để xóa hàm trong cơ sở dữ liệu
+                 function deleteRecord(id) {
+          var formData = new FormData();
+          formData.append("id", id);
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              alert("Bản ghi đã được xóa.");
+              location.reload();
+            }
+          };
+          xhttp.open("POST", "/delete-record", true);
+          xhttp.send(formData);
+        }
 
 
           function addNewRow() {
@@ -116,8 +140,8 @@
             idCell.innerHTML = idValue;
             magvCell.innerHTML = magvValue;
             tengvCell.innerHTML = tengvValue;
-            editCell.innerHTML = "<button>Sửa</button>";
-            deleteCell.innerHTML = "<button>Xóa</button>";
+            editCell.innerHTML = "<button >Sửa</button>";
+            deleteCell.innerHTML = "<button onclick='deleteRow(this)'>Xóa</button>";
 
               // Reset giá trị các ô input
             document.getElementById("inputID").value = "";
@@ -140,7 +164,11 @@
         }
 
 
-   </script>
+
+
+
+
+    </script>
 
 </head>
 <body>
@@ -156,7 +184,6 @@
 
     </div>
 </div>
-
 
 
 </body>

@@ -34,7 +34,7 @@
             <td th:text="${student.getInputMaGV}"></td>
             <td th:text="${student.getInputTenGV}"></td>
             <td><button>Sửa</button></td>
-            <td><button>Xóa</button></td>
+            <td><button onclick="deleteRow(this);" type="button">Xóa</button></td>
         </tr>
         </tbody>
         <!-- Dòng thêm mới -->
@@ -44,7 +44,6 @@
             <td><input type="text" id="inputMaGV" name="inputMaGV"></td>
             <td><input type="text" id="inputTenGV" name="inputTenGV"></td>
             <td><button onclick="addNewRow()" type="submit">Thêm</button></td>
-            <p th:if="${error}" th:text="${error}" style="color: red"></p>
             <td></td>
         </tr>
         </tfoot>

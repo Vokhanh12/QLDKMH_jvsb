@@ -9,5 +9,8 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
+    public void deleteRecordById(Long id) {
+        studentRepository.deleteById(id);
+    }
 
 }
