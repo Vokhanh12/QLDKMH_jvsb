@@ -49,6 +49,32 @@
       xhttp.send();
         }
 
+     function loadListViewDKSV_mh() {
+    var listViewDiv = document.getElementById("ListViewDiv");
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            listViewDiv.innerHTML = this.responseText;
+        }
+    };
+    xhttp.open("POST", "/list_dkmhsv_all", true);
+    xhttp.send();
+}
+
+
+
+   function loadListViewDKGV_mh() {
+    var listViewDiv = document.getElementById("ListViewDiv");
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            listViewDiv.innerHTML = this.responseText;
+        }
+    };
+    xhttp.open("POST", "/list_dkmhgv_all", true);
+    xhttp.send();
+}
+
       function loadListViewGV(){
             var listViewDiv = document.getElementById("ListViewDiv"); // thêm dòng này
       var xhttp = new XMLHttpRequest();
@@ -61,16 +87,28 @@
       xhttp.send();
       }
 
-          // Hàm xóa dòng
-            function deleteRow(row) {
+          // Hàm xóa dòng SV
+            function deleteRowSV(row) {
               var i = row.parentNode.parentNode.rowIndex;
                var name = document.getElementById("listviewSV").rows[i].cells[0].innerHTML;
               document.getElementById("listviewSV").deleteRow(i);
                console.log(name);
-               deleteRecord(name);
+               deleteRecordSV(name);
             }
-                 //dùng để xóa hàm trong cơ sở dữ liệu
-                 function deleteRecord(id) {
+
+             // Hàm xóa dòng GV
+            function deleteRowGV(row) {
+              var i = row.parentNode.parentNode.rowIndex;
+               var name = document.getElementById("listviewGV").rows[i].cells[0].innerHTML;
+              document.getElementById("listviewGV").deleteRow(i);
+               console.log(name);
+               deleteRecordGV(name);
+            }
+
+
+
+                 //dùng để xóa hàm trong cơ sở dữ liệu SV
+                 function deleteRecordSV(id) {
           var formData = new FormData();
           formData.append("id", id);
           var xhttp = new XMLHttpRequest();
@@ -80,23 +118,141 @@
               location.reload();
             }
           };
-          xhttp.open("POST", "/delete-record", true);
+          xhttp.open("POST", "/delete-record-sv", true);
+          xhttp.send(formData);
+        }
+
+        //dùng để xóa hàm trong cơ sở dữ liệu GV
+                 function deleteRecordGV(id) {
+          var formData = new FormData();
+          formData.append("id", id);
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              alert("Bản ghi đã được xóa.");
+              location.reload();
+            }
+          };
+          xhttp.open("POST", "/delete-record-gv", true);
+          xhttp.send(formData);
+        }
+
+         function editRowSV(row) {
+          var i = row.parentNode.parentNode.rowIndex;
+          var id = document.getElementById("listviewSV").rows[i].cells[0].innerHTML;
+          var maSV = document.getElementById("listviewSV").rows[i].cells[1].innerHTML;
+          var tenSV = document.getElementById("listviewSV").rows[i].cells[2].innerHTML;
+
+          // Create a form with input fields to edit the row data
+          var formHTML = '<form id="editForm">';
+          formHTML += '<label for="id">ID:</label>';
+          formHTML += '<input type="text" id="id" name="id" value="' + id + '" readonly><br>';
+          formHTML += '<label for="maSV">Mã sinh viên:</label>';
+          formHTML += '<input type="text" id="maSV" name="maSV" value="' + maSV + '"><br>';
+          formHTML += '<label for="tenSV">Tên sinh viên</label>';
+          formHTML += '<input type="text" id="tenSV" name="tenSV" value="' + tenSV + '"><br>';
+          formHTML += '<input type="button" value="Lưu" onclick="saveRowSV(' + i + ')">';
+          formHTML += '</form>';
+
+          // Replace the row with the form
+          document.getElementById("listviewSV").rows[i].innerHTML = formHTML;
+        }
+
+        function saveRowSV(i) {
+          var id = document.getElementById("id").value;
+          var maSV = document.getElementById("maSV").value;
+          var tenSV = document.getElementById("tenSV").value;
+
+          // Update the table row with the new data
+          //document.getElementById("listviewSV").rows[i].cells[0].innerHTML = id;
+          //document.getElementById("listviewSV").rows[i].cells[1].innerHTML = maSV;
+          //document.getElementById("listviewSV").rows[i].cells[2].innerHTML = tenSV;
+
+          // Save the updated data to the database
+          saveRecordSV(id, maSV, tenSV);
+        }
+
+        function saveRecordSV(id, maSV, tenSV) {
+          var formData = new FormData();
+          formData.append("id", id);
+          formData.append("maSV", maSV);
+          formData.append("tenSV", tenSV);
+
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              alert("Bản ghi đã được cập nhật.");
+            }
+          };
+          xhttp.open("POST", "/save-record-sv", true);
+          xhttp.send(formData);
+        }
+
+          function editRowGV(row) {
+          var i = row.parentNode.parentNode.rowIndex;
+          var id = document.getElementById("listviewGV").rows[i].cells[0].innerHTML;
+          var maGV = document.getElementById("listviewGV").rows[i].cells[1].innerHTML;
+          var tenGV = document.getElementById("listviewGV").rows[i].cells[2].innerHTML;
+
+          // Create a form with input fields to edit the row data
+          var formHTML = '<form id="editForm">';
+          formHTML += '<label for="id">ID:</label>';
+          formHTML += '<input type="text" id="id" name="id" value="' + id + '" readonly><br>';
+          formHTML += '<label for="maGV">Mã sinh viên:</label>';
+          formHTML += '<input type="text" id="maGV" name="maGV" value="' + maGV + '"><br>';
+          formHTML += '<label for="tenGV">Tên sinh viên</label>';
+          formHTML += '<input type="text" id="tenGV" name="tenGV" value="' + tenGV + '"><br>';
+          formHTML += '<input type="button" value="Lưu" onclick="saveRowGV(' + i + ')">';
+          formHTML += '</form>';
+
+          // Replace the row with the form
+          document.getElementById("listviewGV").rows[i].innerHTML = formHTML;
+        }
+
+        function saveRowGV(i) {
+          var id = document.getElementById("id").value;
+          var maGV = document.getElementById("maGV").value;
+          var tenGV = document.getElementById("tenGV").value;
+
+          // Update the table row with the new data
+          //document.getElementById("listviewGV").rows[i].cells[0].innerHTML = id;
+          //document.getElementById("listviewGV").rows[i].cells[1].innerHTML = maSV;
+          //document.getElementById("listviewGV").rows[i].cells[2].innerHTML = tenSV;
+
+          // Save the updated data to the database
+          saveRecord(id, maGV, tenGV);
+        }
+
+        function saveRecord(id, maGV, tenGV) {
+          var formData = new FormData();
+          formData.append("id", id);
+          formData.append("maGV", maGV);
+          formData.append("tenGV", tenGV);
+
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              alert("Bản ghi đã được cập nhật.");
+            }
+          };
+          xhttp.open("POST", "/save-record-gv", true);
           xhttp.send(formData);
         }
 
 
-          function addNewRow() {
+
+          function addNewRowSV() {
           // Lấy bảng bằng ID
           var table = document.getElementById("listviewSV");
 
           // Lấy dòng trống để thêm vào
-          var emptyRow = document.getElementById("emptyRow");
+          var emptyRow = document.getElementById("emptyRowSV");
 
 
           // Lấy giá trị bằng các ô input
           var idValue = document.getElementById("inputID").value;
-          var magvValue= document.getElementById("inputMaGV").value;
-          var tengvValue = document.getElementById("inputTenGV").value
+          var magvValue= document.getElementById("inputMaSV").value;
+          var tengvValue = document.getElementById("inputTenSV").value
 
             // Kiểm tra nếu các ô input đều có giá trị
             if (idValue && magvValue && tengvValue) {
@@ -122,7 +278,7 @@
           };
 
           // Gửi request lên server
-          xhttp.open("POST", "/submit-form", true);
+          xhttp.open("POST", "/submit-form-sv", true);
           xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
           xhttp.send("id=" + id + "&masv=" + masv + "&tensv=" + tensv);
 
@@ -141,7 +297,86 @@
             magvCell.innerHTML = magvValue;
             tengvCell.innerHTML = tengvValue;
             editCell.innerHTML = "<button >Sửa</button>";
-            deleteCell.innerHTML = "<button onclick='deleteRow(this)'>Xóa</button>";
+            deleteCell.innerHTML = "<button onclick='deleteRowSV(this)'>Xóa</button>";
+
+              // Reset giá trị các ô input
+            document.getElementById("inputID").value = "";
+            document.getElementById("inputMaSV").value = "";
+            document.getElementById("inputTenSV").value = "";
+
+
+             // Di chuyển dòng trống xuống dưới
+            table.moveRow(emptyRow.rowIndex, emptyRow.rowIndex + 1);
+
+
+
+
+            } else {
+                // Nếu có ô input nào không có giá trị, hiển thị thông báo lỗi
+                alert("Vui lòng nhập đầy đủ thông tin!");
+            }
+
+
+        }
+
+
+          function addNewRowGV() {
+          // Lấy bảng bằng ID
+          var table = document.getElementById("listviewGV");
+
+          // Lấy dòng trống để thêm vào
+          var emptyRow = document.getElementById("emptyRowGV");
+
+
+          // Lấy giá trị bằng các ô input
+          var idValue = document.getElementById("inputID").value;
+          var magvValue= document.getElementById("inputMaGV").value;
+          var tengvValue = document.getElementById("inputTenGV").value
+
+            // Kiểm tra nếu các ô input đều có giá trị
+            if (idValue && magvValue && tengvValue) {
+
+
+                  // Display success message
+            var messageDiv = document.getElementById("messageDiv");
+            messageDiv.innerHTML = "Thêm thành công!";
+
+            //Xử lý thêm vào mySQL
+           // Tạo đối tượng XMLHttpRequest để gửi request lên server
+          var xhttp = new XMLHttpRequest();
+
+          // Định nghĩa hàm xử lý khi nhận được response từ server
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              // Xử lý response từ server tại đây
+              // Ví dụ: hiển thị thông báo thành công
+              document.getElementById("messageDiv").innerHTML = "Thêm giáo viên thành công!";
+              // Refresh lại trang sau khi thêm thành công
+              window.location.href = "/student-list";
+            }
+          };
+
+          // Gửi request lên server
+          xhttp.open("POST", "/submit-form-gv", true);
+          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhttp.send("id=" + id + "&masv=" + masv + "&tensv=" + tensv);
+
+            //Tạo dòng mới
+            var newRow = table.insertRow(emptyRow.rowIndex);
+
+            // Thêm các ô td vào dòng mới
+            var idCell = newRow.insertCell(0);
+            var magvCell = newRow.insertCell(1);
+            var tengvCell = newRow.insertCell(2);
+            var editCell = newRow.insertCell(3);
+            var deleteCell = newRow.insertCell(4);
+
+              // Gán giá trị vào các ô td
+            idCell.innerHTML = idValue;
+            magvCell.innerHTML = magvValue;
+            tengvCell.innerHTML = tengvValue;
+            editCell.innerHTML = "<button >Sửa</button>";
+            deleteCell.innerHTML = "<button onclick='deleteRowGV(this)'>Xóa</button>";
 
               // Reset giá trị các ô input
             document.getElementById("inputID").value = "";
@@ -178,6 +413,8 @@
 
         <button type="button" onclick="loadListViewSV()">Danh sách sinh viên</button>
         <button type="button" onclick="loadListViewGV()">Danh sách giáo viên</button>
+        <button type="button" onclick="loadListViewDKSV_mh()">Danh sách sinh viên đăng ký môn học</button>
+        <button type="button" onclick="loadListViewDKGV_mh()">Danh sách giáo viên đăng ký dạy môn học</button>
     </div>
 
     <div class="content-bottom" id="ListViewDiv">

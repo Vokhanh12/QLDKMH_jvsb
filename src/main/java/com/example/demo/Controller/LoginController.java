@@ -26,10 +26,7 @@ public class LoginController {
 
 
 
-    @GetMapping("/login")
-    public String showLoginPage() {
-        return "login";
-    }
+
 
     @PostMapping("/login")
     public String processLogin(@RequestParam String username, @RequestParam String password, Model model) {
@@ -52,5 +49,17 @@ public class LoginController {
             model.addAttribute("message", "Invalid username or password");
             return "login";
         }
+    }
+
+    @GetMapping("/pageADMIN")
+    public String processPageAdmin(){
+        // xử lý khi gửi yêu cầu POST đến URL "/pageADMIN"
+        return "pageADMIN";
+    }
+
+    @GetMapping("/pageSV")
+    public String processPageSV(){
+        // xử lý khi gửi yêu cầu POST đến URL "/pageADMIN"
+        return "pageADMIN";
     }
 }

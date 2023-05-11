@@ -1,10 +1,54 @@
+<!-- HTML template using Thymeleaf syntax -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Student List</title>
+    <style>
+        /* CSS styling for table */
+    </style>
+
+    <script>
+
+
+    </script>
+
 </head>
 <body>
-<h1>Danh sach giao vien</h1>
+<h1>Danh sách giáo viên</h1>
+<div id="messageDiv"></div>
+<form id="myForm" action="/submit-form-gv" method="post">
+
+    <table  id="listviewGV" border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Mã Giáo viên</th>
+            <th>Tên Giáo viên</th>
+            <th colspan="2">Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="teacher : ${teachers}">
+            <td th:text="${teacher.getInputID}"></td>
+            <td th:text="${teacher.getInputMaGV}"></td>
+            <td th:text="${teacher.getInputTenGV}"></td>
+            <td><button onclick="editRowGV(this);" type="button">Sửa</button></td>
+            <td><button onclick="deleteRowGV(this);" type="button">Xóa</button></td>
+        </tr>
+        </tbody>
+        <!-- Dòng thêm mới -->
+        <tfoot>
+        <tr id="emptyRowGV">
+            <td><input type="text" id="inputID" name="inputID"></td>
+            <td><input type="text" id="inputMaGV" name="inputMaGV"></td>
+            <td><input type="text" id="inputTenGV" name="inputTenGV"></td>
+            <td><button onclick="addNewRowGV()" type="submit">Thêm</button></td>
+            <td></td>
+        </tr>
+        </tfoot>
+    </table>
+</form>
+
 </body>
 </html>

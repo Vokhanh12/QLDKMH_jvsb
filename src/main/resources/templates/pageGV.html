@@ -26,12 +26,258 @@
 </head>
 <body>
 <div class="container">
-    <div class="content-top">
-        <a th:text="Xin chào ${matk}"></a>
-        <button type="button"></button>
-    </div>
+    <body>
+    <div class="container">
+        <div class="content-top">
+            <form id="myForm" action="/submit-form-dkgv" method="post">
+                <a href="#" style="float:right;">Xin chào:<p style="display:inline;" th:text="${matk}"></p></a> <br>
 
-    <div class="content-bottom">
+                <input type="hidden" name="matk" id="matk" th:value="${matk}" />
+
+
+                <select id="subject" name="subject">
+                    <option value="">-- Chọn môn học --</option>
+                    <option value="Lập trình di động">Lập trình di động</option>
+                    <option value="Phát triển ứng dụng web">Phát triển ứng dụng web</option>
+                    <option value="Cấu trúc dữ liệu và thuật toán">Cấu trúc dữ liệu và thuật toán</option>
+                </select><br><br>
+                <label for="id">ID:</label>
+                <input type="text" id="id" name="id" readonly><br>
+                <label for="maMH">Mã môn học:</label>
+                <input type="text" id="maMH" name="maMH" readonly><br>
+                <label for="tc">Số tín chỉ:</label>
+                <input type="text" id="tc" name="tc" readonly><br>
+                <button type="submit">Đăng ký</button>
+            </form>
+
+            <script>
+		const subjectSelect = document.getElementById("subject");
+		const idInput = document.getElementById("id");
+		const maMHInput = document.getElementById("maMH");
+		const tcInput = document.getElementById("tc");
+
+		// Xử lý sự kiện khi chọn option trong select
+		subjectSelect.addEventListener("change", function() {
+			const selectedOption = this.options[this.selectedIndex].value;
+			if (selectedOption === "Lập trình di động") {
+				idInput.value = "1";
+				maMHInput.value = "ltdd";
+				tcInput.value = "3";
+			} else if (selectedOption === "Phát triển ứng dụng web") {
+				idInput.value = "2";
+				maMHInput.value = "ptudw";
+				tcInput.value = "3";
+			} else if (selectedOption === "Cấu trúc dữ liệu và thuật toán") {
+				idInput.value = "3";
+				maMHInput.value = "ctdltt";
+				tcInput.value = "4";
+			} else {
+				idInput.value = "";
+				maMHInput.value = "";
+				tcInput.value = "";
+			}
+		});
+
+		function loadListViewDK(maGV){
+      var listViewDiv = document.getElementById("ListViewDiv");
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          listViewDiv.innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("POST", "/listdkgv/" + maGV, true);
+      xhttp.send();
+    }
+
+        $.ajax({
+    url: "/submit-form-dk",
+    type: "POST",
+    data: {
+        courseRegistrationEntity: JSON.stringify(courseRegistrationEntity),
+        matk: matk
+    },
+    success: function(response) {
+        // Xử lý kết quả trả về từ server
+        // Ví dụ, cập nhật lại danh sách đăng ký trên trang web
+        // bằng cách thêm HTML mới vào trong phần tử có id="ListViewDiv"
+        $('#ListViewDiv').html(response);
+    },
+    error: function(xhr, status, error) {
+        // Xử lý lỗi (nếu có)
+    }
+});
+
+ // Hàm xóa dòng SV
+            function deleteRowSV(row) {
+              var i = row.parentNode.parentNode.rowIndex;
+               var name = document.getElementById("listviewSV").rows[i].cells[0].innerHTML;
+              document.getElementById("listviewSV").deleteRow(i);
+               console.log(name);
+               deleteRecordSV(name);
+            }
+
+              //dùng để xóa hàm trong cơ sở dữ liệu SV
+                 function deleteRecordSV(id) {
+          var formData = new FormData();
+          formData.append("id", id);
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              alert("Bản ghi đã được xóa.");
+              location.reload();
+            }
+          };
+          xhttp.open("POST", "/delete-record-sv", true);
+          xhttp.send(formData);
+        }
+
+          function editRowSV(row) {
+          var i = row.parentNode.parentNode.rowIndex;
+          var id = document.getElementById("listviewSV").rows[i].cells[0].innerHTML;
+          var maSV = document.getElementById("listviewSV").rows[i].cells[1].innerHTML;
+          var tenSV = document.getElementById("listviewSV").rows[i].cells[2].innerHTML;
+
+          // Create a form with input fields to edit the row data
+          var formHTML = '<form id="editForm">';
+          formHTML += '<label for="id">ID:</label>';
+          formHTML += '<input type="text" id="id" name="id" value="' + id + '" readonly><br>';
+          formHTML += '<label for="maSV">Mã sinh viên:</label>';
+          formHTML += '<input type="text" id="maSV" name="maSV" value="' + maSV + '"><br>';
+          formHTML += '<label for="tenSV">Tên sinh viên</label>';
+          formHTML += '<input type="text" id="tenSV" name="tenSV" value="' + tenSV + '"><br>';
+          formHTML += '<input type="button" value="Lưu" onclick="saveRowSV(' + i + ')">';
+          formHTML += '</form>';
+
+          // Replace the row with the form
+          document.getElementById("listviewSV").rows[i].innerHTML = formHTML;
+        }
+
+  function saveRowSV(i) {
+          var id = document.getElementById("id").value;
+          var maSV = document.getElementById("maSV").value;
+          var tenSV = document.getElementById("tenSV").value;
+
+          // Update the table row with the new data
+          //document.getElementById("listviewSV").rows[i].cells[0].innerHTML = id;
+          //document.getElementById("listviewSV").rows[i].cells[1].innerHTML = maSV;
+          //document.getElementById("listviewSV").rows[i].cells[2].innerHTML = tenSV;
+
+          // Save the updated data to the database
+          saveRecordSV(id, maSV, tenSV);
+        }
+
+          function saveRecordSV(id, maSV, tenSV) {
+          var formData = new FormData();
+          formData.append("id", id);
+          formData.append("maSV", maSV);
+          formData.append("tenSV", tenSV);
+
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              alert("Bản ghi đã được cập nhật.");
+            }
+          };
+          xhttp.open("POST", "/save-record-sv", true);
+          xhttp.send(formData);
+        }
+
+        function addNewRowDK() {
+          // Lấy bảng bằng ID
+          var table = document.getElementById("listviewdk");
+
+          // Lấy dòng trống để thêm vào
+          var emptyRow = document.getElementById("emptyRowdk");
+
+
+
+
+          // Lấy giá trị bằng các ô input
+          var idValue = document.getElementById("inputID").value;
+          var mamhValue= document.getElementById("inputMaMH").value;
+          var temhvValue = document.getElementById("inputTenMH").value;
+          var tcValue = document.getElementById("inputTC").value;
+          var masvValue = document.getElementById("inputMaSV").value;
+
+            // Kiểm tra nếu các ô input đều có giá trị
+            if (idValue && mamhValue && temhvValue && tcValue && inputMaSV) {
+
+
+                  // Display success message
+            var messageDiv = document.getElementById("messageDiv");
+            messageDiv.innerHTML = "Thêm thành công!";
+
+            //Xử lý thêm vào mySQL
+           // Tạo đối tượng XMLHttpRequest để gửi request lên server
+          var xhttp = new XMLHttpRequest();
+
+          // Định nghĩa hàm xử lý khi nhận được response từ server
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              // Xử lý response từ server tại đây
+              // Ví dụ: hiển thị thông báo thành công
+              document.getElementById("messageDiv").innerHTML = "Thêm Đăng ký thành công!";
+              // Refresh lại trang sau khi thêm thành công
+              window.location.href = "/student-list";
+            }
+          };
+
+          // Gửi request lên server
+          xhttp.open("POST", "/submit-form-dk", true);
+          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhttp.send("id=" + id + "&maMH=" + maMH + "&tenMH=" + tenMH + "&masv=" + masv + "&TC=" + TC );
+
+            //Tạo dòng mới
+            var newRow = table.insertRow(emptyRow.rowIndex);
+
+        // Thêm các ô td vào dòng mới
+            var idCell = newRow.insertCell(0);
+            var maMHCell = newRow.insertCell(1);
+            var tenMHCell = newRow.insertCell(2);
+            var masvCell = newRow.insertCell(3);
+            var tcCell = newRow.insertCell(4);
+            var editCell = newRow.insertCell(5);
+            var deleteCell = newRow.insertCell(6);
+
+            // Gán giá trị vào các ô td
+            idCell.innerHTML = idValue;
+            maMHCell.innerHTML = maMHValue;
+            tenMHCell.innerHTML = tenMHValue;
+            masvCell.innerHTML = masvValue;
+            editCell.innerHTML = "<button >Sửa</button>";
+            deleteCell.innerHTML = "<button onclick='deleteRowSV(this)'>Xóa</button>";
+
+              // Reset giá trị các ô input
+            document.getElementById("inputID").value = "";
+            document.getElementById("inputMaMH").value = "";
+            document.getElementById("inputTenMH").value = "";
+            document.getElementById("inputTC").value = "";
+            document.getElementById("inputMaSV").value = "";
+
+             // Di chuyển dòng trống xuống dưới
+            table.moveRow(emptyRow.rowIndex, emptyRow.rowIndex + 1);
+
+
+
+
+            } else {
+                // Nếu có ô input nào không có giá trị, hiển thị thông báo lỗi
+                alert("Vui lòng nhập đầy đủ thông tin!");
+            }
+
+
+        }
+
+
+	</script>
+            <button type="button" onclick="loadListViewDK(document.getElementById('matk').value)">Danh sách giáo viên đăng ký môn</button>
+        </div>
+
+        <div  class="content-bottom" id="ListViewDiv">
+
+        </div>
+
 
     </div>
 </div>

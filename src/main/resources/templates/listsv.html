@@ -17,7 +17,7 @@
 <body>
 <h1>Student List</h1>
 <div id="messageDiv"></div>
-<form id="myForm" action="/submit-form" method="post">
+<form id="myForm" action="/submit-form-sv" method="post">
 
     <table  id="listviewSV" border="1">
         <thead>
@@ -31,19 +31,19 @@
         <tbody>
         <tr th:each="student : ${students}">
             <td th:text="${student.getInputID}"></td>
-            <td th:text="${student.getInputMaGV}"></td>
-            <td th:text="${student.getInputTenGV}"></td>
-            <td><button>Sửa</button></td>
-            <td><button onclick="deleteRow(this);" type="button">Xóa</button></td>
+            <td th:text="${student.getInputMaSV}"></td>
+            <td th:text="${student.getInputTenSV}"></td>
+            <td><button onclick="editRowSV(this);" type="button">Sửa</button></td>
+            <td><button onclick="deleteRowSV(this);" type="button">Xóa</button></td>
         </tr>
         </tbody>
         <!-- Dòng thêm mới -->
         <tfoot>
-        <tr id="emptyRow">
+        <tr id="emptyRowSV">
             <td><input type="text" id="inputID" name="inputID"></td>
-            <td><input type="text" id="inputMaGV" name="inputMaGV"></td>
-            <td><input type="text" id="inputTenGV" name="inputTenGV"></td>
-            <td><button onclick="addNewRow()" type="submit">Thêm</button></td>
+            <td><input type="text" id="inputMaSV" name="inputMaSV"></td>
+            <td><input type="text" id="inputTenSV" name="inputTenSV"></td>
+            <td><button onclick="addNewRowSV()" type="submit">Thêm</button></td>
             <td></td>
         </tr>
         </tfoot>

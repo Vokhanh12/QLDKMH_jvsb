@@ -1,28 +1,34 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Entity.StudentEntity;
+import com.example.demo.Entity.TeacherEntity;
 import com.example.demo.Repository.StudentRepository;
+import com.example.demo.Repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
 @Controller
-public class studentsController {
+public class teachersController {
 
     @Autowired
-    private StudentRepository studentRepository;
+    private TeacherRepository teacherRepository;
+    @PostMapping("/submit-form-gv")
+    public String SaveStudent(@ModelAttribute("teacher") TeacherEntity teacherEntity) {
+        teacherRepository.save(teacherEntity);
+        return "redirect:/pageADMIN";
+    }
 
-
-
-    @PostMapping("/delete-record-sv")
+    @PostMapping("/delete-record-gv")
     public ResponseEntity<String> deleteRecord(@RequestParam("id") Long id) {
         try {
-            studentRepository.deleteById(id);
+            teacherRepository.deleteById(id);
             return ResponseEntity.ok("Bản ghi đã được xóa.");
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().body("ID không hợp lệ.");
@@ -32,21 +38,16 @@ public class studentsController {
 
     }
 
-    @PostMapping("/submit-form-sv")
-    public String SaveStudent(@ModelAttribute("student") StudentEntity studentEnity) {
-        studentRepository.save(studentEnity);
-        return "redirect:/pageADMIN";
-    }
-    @PostMapping("/save-record-sv")
-    public ResponseEntity<String> saveRecord(@RequestParam Long id, @RequestParam String maSV, @RequestParam String tenSV) {
+    @PostMapping("/save-record-gv")
+    public ResponseEntity<String> saveRecord(@RequestParam Long id, @RequestParam String maGV, @RequestParam String tenGV) {
         // find the record in the database by name
-        Optional<StudentEntity> student = studentRepository.findById(id);
-        if (student.isPresent()) {
-            StudentEntity studentEntity = student.get();
+        Optional<TeacherEntity> teacher = teacherRepository.findById(id);
+        if (teacher.isPresent()) {
+            TeacherEntity teacherEntity = teacher.get();
             // xử lý đối tượng student
-            studentEntity.setInputMaSV(maSV);
-            studentEntity.setInputTenSV(tenSV);
-            studentRepository.save(studentEntity);
+            teacherEntity.setInputMaGV(maGV);
+            teacherEntity.setInputTenGV(tenGV);
+            teacherRepository.save(teacherEntity);
 
             return ResponseEntity.ok("Bản ghi đã được cập nhật.");
         } else {
@@ -56,6 +57,4 @@ public class studentsController {
     }
 
 
-
 }
-

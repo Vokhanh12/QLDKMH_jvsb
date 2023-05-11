@@ -1,0 +1,59 @@
+<!-- HTML template using Thymeleaf syntax -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Student List</title>
+  <style>
+        /* CSS styling for table */
+    </style>
+
+  <script>
+
+
+  </script>
+
+</head>
+<body>
+<h1>Danh sách Đăng ký môn học</h1>
+<div id="messageDiv"></div>
+<form id="myForm" action="/submit-form-dksv" method="post">
+
+  <table  id="listviewdksv" border="1">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Mã môn học</th>
+      <th>Tên môn học</th>
+      <th>Tên tín chỉ</th>
+      <th>Mã sinh viên</th>
+      <th colspan="2">Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="courseRegistration : ${courseRegistrations}">
+      <td th:text="${courseRegistration.getInputID}"></td>
+      <td th:text="${courseRegistration.getMaMH}"></td>
+      <td th:text="${courseRegistration.getSubject}"></td>
+      <td th:text="${courseRegistration.getTc}"></td>
+      <td th:text="${courseRegistration.getMaSV}"></td>
+      <td><button onclick="editRowDK(this);" type="button">Sửa</button></td>
+      <td><button onclick="deleteRowDK(this);" type="button">Xóa</button></td>
+    </tr>
+    </tbody>
+    <!-- Dòng thêm mới -->
+    <tfoot>
+    <tr id="emptyRowdk">
+      <td><input type="text" id="inputID" name="inputID"></td>
+      <td><input type="text" id="inputMaMH" name="inputMaMH"></td>
+      <td><input type="text" id="inputTenMH" name="inputTenMH"></td>
+      <td><input type="text" id="inputTC" name="inputTC"></td>
+      <td><input type="text" id="inputMaSV" name="inputMaSV"></td>
+      <td></td>
+    </tr>
+    </tfoot>
+  </table>
+</form>
+
+</body>
+</html>

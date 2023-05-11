@@ -1,0 +1,20 @@
+[
+    {
+      "id": 1,
+      "maMH": "ltdd",
+      "tenMH": "Lập trình di động",
+      "tc": 3
+    },
+    {
+      "id": 2,
+      "maMH": "ptudw",
+      "tenMH": "Phát triển ứng dụng web",
+      "tc": 3
+    },
+    {
+      "id": 3,
+      "maMH": "ctdltt",
+      "tenMH": "Cấu trúc dữ liệu và thuật toán",
+      "tc": 4
+    }
+  ]
